@@ -329,6 +329,9 @@ h1 {
     cursor: pointer;
     transition: all 0.2s;
     line-height: 1.5;
+    word-wrap: break-word;
+    word-break: break-all;
+    flex: 1;
 }
 
 .task-text.completed {
@@ -340,6 +343,16 @@ h1 {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
+}
+
+.task-meta::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 16px;
+    background: #e2e8f0;
+    margin-left: auto;
 }
 
 .priority-tag {
