@@ -297,8 +297,17 @@ h1 {
 .task-content {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
+    align-items: flex-start;
+}
+
+.task-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    min-width: 60px;
 }
 
 .task-actions-row {
