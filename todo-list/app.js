@@ -333,7 +333,7 @@ importFile.addEventListener('change', (e) => {
         try {
             const importedTasks = JSON.parse(event.target.result);
             if (Array.isArray(importedTasks) && importedTasks.length > 0) {
-                const choice = confirm(`导入 ${importedTasks.length} 个任务\n\n确定：覆盖当前所有任务\n取消：合并到现有任务`);
+                const choice = confirm(`导入 ${importedTasks.length} 个任务\n\n确定(覆盖)：替换当前所有任务\n取消(合并)：添加到现有任务`);
                 
                 if (choice) {
                     tasks = importedTasks;
