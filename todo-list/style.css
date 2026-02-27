@@ -22,7 +22,7 @@ body {
     max-width: 500px;
     padding: 32px;
     margin: 20px;
-    max-height: 90vh;
+    max-height: 95vh;
     display: flex;
     flex-direction: column;
 }
@@ -334,6 +334,16 @@ h1 {
     flex: 1;
     padding: 2px 4px;
     border-radius: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 45px;
+}
+
+.task-text.editing {
+    -webkit-line-clamp: unset;
+    overflow: auto;
 }
 
 .task-text:focus {
@@ -377,6 +387,8 @@ h1 {
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
+    align-self: flex-start;
+    margin-top: 4px;
 }
 
 .task-meta::after {
@@ -386,6 +398,7 @@ h1 {
     height: 30px;
     background: #e2e8f0;
     margin-left: auto;
+    align-self: center;
 }
 
 .priority-tag {

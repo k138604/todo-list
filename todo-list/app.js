@@ -211,11 +211,27 @@ function renderTaskItem(task, index) {
     </svg>`;
     editBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const newText = prompt('编辑任务描述：', task.text);
-        if (newText !== null && newText.trim() && newText.trim() !== task.text) {
-            tasks[index].text = newText.trim();
+        span.contentEditable = true;
+        span.classList.add('editing');
+        span.focus();
+    });
+    
+    span.addEventListener('blur', () => {
+        span.contentEditable = false;
+        span.classList.remove('editing');
+        const newText = span.textContent.trim();
+        if (newText && newText !== task.text) {
+            tasks[index].text = newText;
             saveTasks();
-            renderTasks();
+        } else {
+            span.textContent = task.text;
+        }
+    });
+    
+    span.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            span.blur();
         }
     });
     
