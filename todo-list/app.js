@@ -1,12 +1,9 @@
 const taskInput = document.getElementById('taskInput');
-const addBtn = document.getElementById('addBtn');
 const taskList = document.getElementById('taskList');
-const priorityBtn = document.getElementById('priorityBtn');
 const clearAllBtn = document.getElementById('clearAllBtn');
 const taskCount = document.getElementById('taskCount');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-let isImportant = false;
 let isCompletedFolded = localStorage.getItem('isCompletedFolded') === 'true';
 
 function saveTasks() {
@@ -284,14 +281,12 @@ function addTask() {
         text, 
         completed: false, 
         createdAt: formatDate(new Date()),
-        important: isImportant,
+        important: false,
         deadline: null
     });
     saveTasks();
     renderTasks();
     taskInput.value = '';
-    isImportant = false;
-    priorityBtn.classList.remove('active');
     taskInput.focus();
 }
 
@@ -315,21 +310,6 @@ function deleteTask(index) {
     renderTasks();
 }
 
-function togglePriority() {
-    isImportant = !isImportant;
-    priorityBtn.classList.toggle('active');
-}
-
-addBtn.addEventListener('click', addTask);
-priorityBtn.addEventListener('click', () => {
-    if (taskInput.value.trim()) {
-        isImportant = !isImportant || !priorityBtn.classList.contains('active');
-        priorityBtn.classList.add('active');
-        addTask();
-    } else {
-        togglePriority();
-    }
-});
 taskInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addTask();
 });
