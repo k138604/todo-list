@@ -205,8 +205,28 @@ function renderTaskItem(task, index) {
     taskActionsRow.className = 'task-actions-row';
     
     taskContent.appendChild(span);
-    taskContent.appendChild(meta);
-    taskContent.appendChild(taskActionsRow);
+    
+    const taskActionsRow = document.createElement('div');
+    taskActionsRow.className = 'task-actions-row';
+    
+    const importantBtn = document.createElement('button');
+    importantBtn.className = `important-toggle-btn ${task.important ? 'active' : ''}`;
+    importantBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="${task.important ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </svg>`;
+    importantBtn.title = task.important ? '取消重要' : '设为重要';
+    importantBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        tasks[index].important = !tasks[index].important;
+        saveTasks();
+        renderTasks();
+    });
+    taskActionsRow.appendChild(importantBtn);
+    
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'task-time';
+    timeSpan.textContent = task.createdAt || '';
+    taskActionsRow.appendChild(timeSpan);
     
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';
