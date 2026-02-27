@@ -158,8 +158,10 @@ function renderTaskItem(task, index) {
     const span = document.createElement('span');
     span.className = `task-text ${task.completed ? 'completed' : ''}`;
     span.textContent = task.text;
-    span.addEventListener('click', () => {
-        toggleTask(index);
+    span.addEventListener('click', (e) => {
+        if (!span.isEditing) {
+            toggleTask(index);
+        }
     });
     
     const meta = document.createElement('div');
@@ -199,8 +201,12 @@ function renderTaskItem(task, index) {
     
     meta.appendChild(timeSpan);
     
+    const taskActionsRow = document.createElement('div');
+    taskActionsRow.className = 'task-actions-row';
+    
     taskContent.appendChild(span);
     taskContent.appendChild(meta);
+    taskContent.appendChild(taskActionsRow);
     
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';
@@ -211,14 +217,14 @@ function renderTaskItem(task, index) {
     </svg>`;
     editBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        span.isEditing = true;
         span.contentEditable = true;
-        span.classList.add('editing');
         span.focus();
     });
     
     span.addEventListener('blur', () => {
+        span.isEditing = false;
         span.contentEditable = false;
-        span.classList.remove('editing');
         const newText = span.textContent.trim();
         if (newText && newText !== task.text) {
             tasks[index].text = newText;
@@ -272,9 +278,9 @@ function renderTaskItem(task, index) {
     });
     
     li.appendChild(taskContent);
-    li.appendChild(editBtn);
-    li.appendChild(deadlineBtn);
-    li.appendChild(deleteBtn);
+    taskActionsRow.appendChild(editBtn);
+    taskActionsRow.appendChild(deadlineBtn);
+    taskActionsRow.appendChild(deleteBtn);
     
     return li;
 }

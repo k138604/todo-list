@@ -200,7 +200,7 @@ h1 {
     list-style: none;
     flex: 1;
     overflow-y: auto;
-    max-height: 50vh;
+    max-height: 70vh;
     padding-right: 4px;
 }
 
@@ -334,16 +334,14 @@ h1 {
     flex: 1;
     padding: 2px 4px;
     border-radius: 4px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
     min-height: 45px;
+    max-height: 72px;
+    overflow-y: auto;
 }
 
-.task-text.editing {
-    -webkit-line-clamp: unset;
-    overflow: auto;
+.task-text:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
 }
 
 .task-text:focus {
@@ -391,14 +389,11 @@ h1 {
     margin-top: 4px;
 }
 
-.task-meta::after {
-    content: '';
-    display: inline-block;
-    width: 1px;
-    height: 30px;
-    background: #e2e8f0;
+.task-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     margin-left: auto;
-    align-self: center;
 }
 
 .priority-tag {
