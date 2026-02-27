@@ -164,48 +164,6 @@ function renderTaskItem(task, index) {
         }
     });
     
-    const meta = document.createElement('div');
-    meta.className = 'task-meta';
-    
-    const importantBtn = document.createElement('button');
-    importantBtn.className = `important-toggle-btn ${task.important ? 'active' : ''}`;
-    importantBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="${task.important ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-    </svg>`;
-    importantBtn.title = task.important ? '取消重要' : '设为重要';
-    importantBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        tasks[index].important = !tasks[index].important;
-        saveTasks();
-        renderTasks();
-    });
-    meta.appendChild(importantBtn);
-    
-    if (task.important) {
-        const tag = document.createElement('span');
-        tag.className = 'priority-tag';
-        tag.textContent = '重要';
-        meta.appendChild(tag);
-    }
-    
-    if (task.deadline) {
-        const deadlineTag = document.createElement('span');
-        deadlineTag.className = 'deadline-tag';
-        deadlineTag.textContent = getDeadlineDisplay(task.deadline);
-        meta.appendChild(deadlineTag);
-    }
-    
-    const timeSpan = document.createElement('span');
-    timeSpan.className = 'task-time';
-    timeSpan.textContent = task.createdAt || '';
-    
-    meta.appendChild(timeSpan);
-    
-    const taskActionsRow = document.createElement('div');
-    taskActionsRow.className = 'task-actions-row';
-    
-    taskContent.appendChild(span);
-    
     const taskActionsRow = document.createElement('div');
     taskActionsRow.className = 'task-actions-row';
     
@@ -261,6 +219,8 @@ function renderTaskItem(task, index) {
         }
     });
     
+    taskActionsRow.appendChild(editBtn);
+    
     const deadlineBtn = document.createElement('button');
     deadlineBtn.className = 'deadline-btn';
     deadlineBtn.title = '设置截止时间';
@@ -284,6 +244,7 @@ function renderTaskItem(task, index) {
             renderTasks();
         }
     });
+    taskActionsRow.appendChild(deadlineBtn);
     
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -296,11 +257,11 @@ function renderTaskItem(task, index) {
         e.stopPropagation();
         deleteTask(index);
     });
-    
-    li.appendChild(taskContent);
-    taskActionsRow.appendChild(editBtn);
-    taskActionsRow.appendChild(deadlineBtn);
     taskActionsRow.appendChild(deleteBtn);
+    
+    taskContent.appendChild(span);
+    taskContent.appendChild(taskActionsRow);
+    li.appendChild(taskContent);
     
     return li;
 }
