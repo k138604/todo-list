@@ -162,6 +162,9 @@ function renderTaskItem(task, index) {
     });
     taskContent.appendChild(span);
     
+    const taskMetaRow = document.createElement('div');
+    taskMetaRow.className = 'task-meta-row';
+    
     const taskLeft = document.createElement('div');
     taskLeft.className = 'task-left';
     
@@ -184,11 +187,13 @@ function renderTaskItem(task, index) {
     timeSpan.textContent = task.createdAt || '';
     taskLeft.appendChild(timeSpan);
     
+    taskMetaRow.appendChild(taskLeft);
+    
     const taskActionsRow = document.createElement('div');
     taskActionsRow.className = 'task-actions-row';
+    taskMetaRow.appendChild(taskActionsRow);
     
-    taskContent.appendChild(taskLeft);
-    taskContent.appendChild(taskActionsRow);
+    taskContent.appendChild(taskMetaRow);
     
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';

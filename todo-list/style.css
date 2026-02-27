@@ -301,6 +301,12 @@ h1 {
     gap: 8px;
 }
 
+.task-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .task-left {
     display: flex;
     flex-direction: row;
