@@ -154,31 +154,6 @@ function renderTaskItem(task, index) {
     const span = document.createElement('span');
     span.className = `task-text ${task.completed ? 'completed' : ''}`;
     span.textContent = task.text;
-    span.spellcheck = false;
-    span.title = '双击编辑，单击切换完成';
-    span.addEventListener('dblclick', () => {
-        span.contentEditable = true;
-        span.focus();
-    });
-    
-    span.addEventListener('blur', () => {
-        span.contentEditable = false;
-        const newText = span.textContent.trim();
-        if (newText && newText !== task.text) {
-            tasks[index].text = newText;
-            saveTasks();
-        } else {
-            span.textContent = task.text;
-        }
-    });
-    
-    span.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            span.blur();
-        }
-    });
-    
     span.addEventListener('click', () => {
         toggleTask(index);
     });
@@ -223,10 +198,22 @@ function renderTaskItem(task, index) {
     taskContent.appendChild(span);
     taskContent.appendChild(meta);
     
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.textContent = '删除';
-    deleteBtn.addEventListener('click', () => deleteTask(index));
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.title = '编辑';
+    editBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+    </svg>`;
+    editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newText = prompt('编辑任务描述：', task.text);
+        if (newText !== null && newText.trim() && newText.trim() !== task.text) {
+            tasks[index].text = newText.trim();
+            saveTasks();
+            renderTasks();
+        }
+    });
     
     const deadlineBtn = document.createElement('button');
     deadlineBtn.className = 'deadline-btn';
@@ -252,7 +239,20 @@ function renderTaskItem(task, index) {
         }
     });
     
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.title = '删除';
+    deleteBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+    </svg>`;
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteTask(index);
+    });
+    
     li.appendChild(taskContent);
+    li.appendChild(editBtn);
     li.appendChild(deadlineBtn);
     li.appendChild(deleteBtn);
     
