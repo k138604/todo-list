@@ -154,8 +154,15 @@ function renderTaskItem(task, index) {
     const span = document.createElement('span');
     span.className = `task-text ${task.completed ? 'completed' : ''}`;
     span.textContent = task.text;
-    span.contentEditable = true;
+    span.spellcheck = false;
+    span.title = '双击编辑，单击切换完成';
+    span.addEventListener('dblclick', () => {
+        span.contentEditable = true;
+        span.focus();
+    });
+    
     span.addEventListener('blur', () => {
+        span.contentEditable = false;
         const newText = span.textContent.trim();
         if (newText && newText !== task.text) {
             tasks[index].text = newText;
@@ -164,16 +171,16 @@ function renderTaskItem(task, index) {
             span.textContent = task.text;
         }
     });
+    
     span.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             span.blur();
         }
     });
-    span.addEventListener('click', (e) => {
-        if (task.completed) {
-            toggleTask(index);
-        }
+    
+    span.addEventListener('click', () => {
+        toggleTask(index);
     });
     
     const meta = document.createElement('div');
