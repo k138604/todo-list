@@ -332,12 +332,16 @@ importFile.addEventListener('change', (e) => {
     reader.onload = (event) => {
         try {
             const importedTasks = JSON.parse(event.target.result);
-            if (Array.isArray(importedTasks)) {
-                if (confirm(`确定要导入 ${importedTasks.length} 个任务吗？\n这将覆盖当前所有任务。`)) {
+            if (Array.isArray(importedTasks) && importedTasks.length > 0) {
+                const choice = confirm(`导入 ${importedTasks.length} 个任务\n\n确定：覆盖当前所有任务\n取消：合并到现有任务`);
+                
+                if (choice) {
                     tasks = importedTasks;
-                    saveTasks();
-                    renderTasks();
+                } else {
+                    tasks = [...tasks, ...importedTasks];
                 }
+                saveTasks();
+                renderTasks();
             } else {
                 alert('文件格式不正确');
             }
