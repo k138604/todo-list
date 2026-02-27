@@ -138,8 +138,8 @@ function renderTaskItem(task, index) {
         progressBar.className = 'progress-bar';
         
         const progressFill = document.createElement('div');
-        progressFill.className = 'progress percent = getProgress-fill';
-        constPercent(task.deadline, task.deadlineSetAt);
+        progressFill.className = 'progress-fill';
+        const percent = getProgressPercent(task.deadline, task.deadlineSetAt);
         progressFill.style.width = `${percent}%`;
         
         if (percent >= 100) {
@@ -151,6 +151,16 @@ function renderTaskItem(task, index) {
         progressBar.appendChild(progressFill);
         taskContent.appendChild(progressBar);
     }
+    
+    const span = document.createElement('span');
+    span.className = `task-text ${task.completed ? 'completed' : ''}`;
+    span.textContent = task.text;
+    span.addEventListener('click', (e) => {
+        if (!span.isEditing) {
+            toggleTask(index);
+        }
+    });
+    taskContent.appendChild(span);
     
     const taskLeft = document.createElement('div');
     taskLeft.className = 'task-left';
@@ -174,19 +184,11 @@ function renderTaskItem(task, index) {
     timeSpan.textContent = task.createdAt || '';
     taskLeft.appendChild(timeSpan);
     
-    taskContent.appendChild(taskLeft);
-    
-    const span = document.createElement('span');
-    span.className = `task-text ${task.completed ? 'completed' : ''}`;
-    span.textContent = task.text;
-    span.addEventListener('click', (e) => {
-        if (!span.isEditing) {
-            toggleTask(index);
-        }
-    });
-    
     const taskActionsRow = document.createElement('div');
     taskActionsRow.className = 'task-actions-row';
+    
+    taskContent.appendChild(taskLeft);
+    taskContent.appendChild(taskActionsRow);
     
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';
