@@ -78,7 +78,11 @@ function renderTasks() {
         if (!a.important && b.important) return 1;
         return 0;
     });
-    const completedTasks = tasks.filter(t => t.completed);
+    const completedTasks = tasks.filter(t => t.completed).sort((a, b) => {
+        if (a.important && !b.important) return -1;
+        if (!a.important && b.important) return 1;
+        return 0;
+    });
     
     if (activeTasks.length > 0) {
         const groupTitle = document.createElement('li');
