@@ -154,10 +154,44 @@ function renderTaskItem(task, index) {
     const span = document.createElement('span');
     span.className = `task-text ${task.completed ? 'completed' : ''}`;
     span.textContent = task.text;
-    span.addEventListener('click', () => toggleTask(index));
+    span.contentEditable = true;
+    span.addEventListener('blur', () => {
+        const newText = span.textContent.trim();
+        if (newText && newText !== task.text) {
+            tasks[index].text = newText;
+            saveTasks();
+        } else {
+            span.textContent = task.text;
+        }
+    });
+    span.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            span.blur();
+        }
+    });
+    span.addEventListener('click', (e) => {
+        if (task.completed) {
+            toggleTask(index);
+        }
+    });
     
     const meta = document.createElement('div');
     meta.className = 'task-meta';
+    
+    const importantBtn = document.createElement('button');
+    importantBtn.className = `important-toggle-btn ${task.important ? 'active' : ''}`;
+    importantBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="${task.important ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+    </svg>`;
+    importantBtn.title = task.important ? '取消重要' : '设为重要';
+    importantBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        tasks[index].important = !tasks[index].important;
+        saveTasks();
+        renderTasks();
+    });
+    meta.appendChild(importantBtn);
     
     if (task.important) {
         const tag = document.createElement('span');
