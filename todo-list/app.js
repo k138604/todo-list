@@ -287,6 +287,69 @@ taskInput.addEventListener('keypress', (e) => {
 });
 clearAllBtn.addEventListener('click', clearAll);
 
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
+
+settingsBtn.addEventListener('click', () => {
+    settingsModal.classList.add('show');
+});
+
+closeModalBtn.addEventListener('click', () => {
+    settingsModal.classList.remove('show');
+});
+
+settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) {
+        settingsModal.classList.remove('show');
+    }
+});
+
+exportBtn.addEventListener('click', () => {
+    const dataStr = JSON.stringify(tasks, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `todo-list-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    settingsModal.classList.remove('show');
+});
+
+importBtn.addEventListener('click', () => {
+    importFile.click();
+});
+
+importFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        try {
+            const importedTasks = JSON.parse(event.target.result);
+            if (Array.isArray(importedTasks)) {
+                if (confirm(`确定要导入 ${importedTasks.length} 个任务吗？\n这将覆盖当前所有任务。`)) {
+                    tasks = importedTasks;
+                    saveTasks();
+                    renderTasks();
+                }
+            } else {
+                alert('文件格式不正确');
+            }
+        } catch (err) {
+            alert('文件解析失败');
+        }
+        importFile.value = '';
+        settingsModal.classList.remove('show');
+    };
+    reader.readAsText(file);
+});
+
 renderTasks();
 
 setInterval(() => {
