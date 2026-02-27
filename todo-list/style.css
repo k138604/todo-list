@@ -523,3 +523,26 @@ h1 {
     background: #eff6ff;
     color: #3b82f6;
 }
+
+.setting-btn.danger {
+    border-color: #fecaca;
+    color: #ef4444;
+}
+
+.setting-btn.danger:hover {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.about {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.about p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
