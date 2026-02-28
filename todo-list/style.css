@@ -404,8 +404,24 @@ h1 {
 .task-actions-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex: 1;
+    flex-wrap: wrap;
+}
+
+.task-actions-left > * + * {
+    position: relative;
+}
+
+.task-actions-left .task-time::before {
+    content: '•';
+    position: absolute;
+    left: -10px;
+    color: #cbd5e1;
+}
+
+.task-actions-left .important-tag + .task-time::before {
+    left: -8px;
 }
 
 .task-actions-right {
@@ -437,6 +453,32 @@ h1 {
 .task-time {
     font-size: 12px;
     color: #94a3b8;
+}
+
+.important-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.task-deadline {
+    display: inline-block;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.task-deadline.expired {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
 }
 
 .delete-btn {

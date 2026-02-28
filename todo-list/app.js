@@ -182,10 +182,30 @@ function renderTaskItem(task, index) {
     });
     taskActionsLeft.appendChild(importantBtn);
     
+    if (task.important) {
+        const importantTag = document.createElement('span');
+        importantTag.className = 'important-tag';
+        importantTag.textContent = '重要';
+        taskActionsLeft.appendChild(importantTag);
+    }
+    
     const timeSpan = document.createElement('span');
     timeSpan.className = 'task-time';
     timeSpan.textContent = task.createdAt || '';
     taskActionsLeft.appendChild(timeSpan);
+    
+    if (task.deadline && !task.completed) {
+        const deadlineSpan = document.createElement('span');
+        deadlineSpan.className = 'task-deadline';
+        const mins = getDeadlineMinutes(task.deadline);
+        if (mins > 0) {
+            deadlineSpan.textContent = `剩余${mins}分钟`;
+        } else {
+            deadlineSpan.textContent = '已过期';
+            deadlineSpan.classList.add('expired');
+        }
+        taskActionsLeft.appendChild(deadlineSpan);
+    }
     
     taskActionsRow.appendChild(taskActionsLeft);
     
@@ -270,6 +290,13 @@ function renderTaskItem(task, index) {
     li.appendChild(taskContent);
     
     return li;
+}
+
+function getDeadlineMinutes(deadline) {
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    const diff = deadlineDate - now;
+    return Math.floor(diff / (1000 * 60));
 }
 
 function formatDate(date) {
