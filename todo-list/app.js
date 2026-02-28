@@ -5,6 +5,7 @@ const taskCount = document.getElementById('taskCount');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 let isCompletedFolded = localStorage.getItem('isCompletedFolded') === 'true';
+let editingIndex = null;
 
 function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -221,12 +222,14 @@ function renderTaskItem(task, index) {
     </svg>`;
     editBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        editingIndex = index;
         span.isEditing = true;
         span.contentEditable = true;
         span.focus();
     });
     
     span.addEventListener('blur', () => {
+        editingIndex = null;
         span.isEditing = false;
         span.contentEditable = false;
         const newText = span.textContent.trim();
@@ -421,5 +424,7 @@ importFile.addEventListener('change', (e) => {
 renderTasks();
 
 setInterval(() => {
-    renderTasks();
+    if (editingIndex === null) {
+        renderTasks();
+    }
 }, 60000);
