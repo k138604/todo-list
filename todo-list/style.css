@@ -301,19 +301,6 @@ h1 {
     gap: 8px;
 }
 
-.task-meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.task-left {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-}
-
 .task-actions-row {
     display: flex;
     align-items: center;
@@ -408,8 +395,21 @@ h1 {
 .task-actions-row {
     display: flex;
     align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.task-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.task-actions-right {
+    display: flex;
+    align-items: center;
     gap: 4px;
-    margin-left: auto;
 }
 
 .priority-tag {

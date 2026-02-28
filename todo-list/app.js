@@ -162,11 +162,11 @@ function renderTaskItem(task, index) {
     });
     taskContent.appendChild(span);
     
-    const taskMetaRow = document.createElement('div');
-    taskMetaRow.className = 'task-meta-row';
+    const taskActionsRow = document.createElement('div');
+    taskActionsRow.className = 'task-actions-row';
     
-    const taskLeft = document.createElement('div');
-    taskLeft.className = 'task-left';
+    const taskActionsLeft = document.createElement('div');
+    taskActionsLeft.className = 'task-actions-left';
     
     const importantBtn = document.createElement('button');
     importantBtn.className = `important-toggle-btn ${task.important ? 'active' : ''}`;
@@ -180,20 +180,17 @@ function renderTaskItem(task, index) {
         saveTasks();
         renderTasks();
     });
-    taskLeft.appendChild(importantBtn);
+    taskActionsLeft.appendChild(importantBtn);
     
     const timeSpan = document.createElement('span');
     timeSpan.className = 'task-time';
     timeSpan.textContent = task.createdAt || '';
-    taskLeft.appendChild(timeSpan);
+    taskActionsLeft.appendChild(timeSpan);
     
-    taskMetaRow.appendChild(taskLeft);
+    taskActionsRow.appendChild(taskActionsLeft);
     
-    const taskActionsRow = document.createElement('div');
-    taskActionsRow.className = 'task-actions-row';
-    taskMetaRow.appendChild(taskActionsRow);
-    
-    taskContent.appendChild(taskMetaRow);
+    const taskActionsRight = document.createElement('div');
+    taskActionsRight.className = 'task-actions-right';
     
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';
@@ -228,7 +225,7 @@ function renderTaskItem(task, index) {
         }
     });
     
-    taskActionsRow.appendChild(editBtn);
+    taskActionsRight.appendChild(editBtn);
     
     const deadlineBtn = document.createElement('button');
     deadlineBtn.className = 'deadline-btn';
@@ -239,7 +236,7 @@ function renderTaskItem(task, index) {
     </svg>`;
     deadlineBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const choice = prompt('请输入截止时间（分钟）：\n30=30分钟, 60=1小时, 1440=1天, 10080=1周\n输入0清除截止时间');
+        const choice = prompt('请输入截止时间（分钟）：\n30=30 分钟，60=1 小时，1440=1 天，10080=1 周\n输入 0 清除截止时间');
         if (choice !== null) {
             const mins = parseInt(choice);
             if (mins === 0) {
@@ -253,7 +250,7 @@ function renderTaskItem(task, index) {
             renderTasks();
         }
     });
-    taskActionsRow.appendChild(deadlineBtn);
+    taskActionsRight.appendChild(deadlineBtn);
     
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
@@ -266,9 +263,9 @@ function renderTaskItem(task, index) {
         e.stopPropagation();
         deleteTask(index);
     });
-    taskActionsRow.appendChild(deleteBtn);
+    taskActionsRight.appendChild(deleteBtn);
+    taskActionsRow.appendChild(taskActionsRight);
     
-    taskContent.appendChild(span);
     taskContent.appendChild(taskActionsRow);
     li.appendChild(taskContent);
     
