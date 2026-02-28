@@ -200,7 +200,7 @@ function renderTaskItem(task, index) {
         deadlineSpan.className = 'task-deadline';
         const mins = getDeadlineMinutes(task.deadline);
         if (mins > 0) {
-            deadlineSpan.textContent = `剩余${mins}分钟`;
+            deadlineSpan.textContent = `剩余${formatDeadlineTime(mins)}`;
         } else {
             deadlineSpan.textContent = '已过期';
             deadlineSpan.classList.add('expired');
@@ -259,15 +259,17 @@ function renderTaskItem(task, index) {
     </svg>`;
     deadlineBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const choice = prompt('请输入截止时间（分钟）：\n30=30 分钟，60=1 小时，1440=1 天，10080=1 周\n输入 0 清除截止时间');
+        const choice = prompt('请输入截止时间：\n30 或 30m = 30 分钟\n2h 或 2 小时 = 2 小时\n1d 或 1 天 = 1 天\n10080m 或 7d = 1 周\n输入 0 清除截止时间');
         if (choice !== null) {
-            const mins = parseInt(choice);
+            const mins = parseDeadlineInput(choice);
             if (mins === 0) {
                 tasks[index].deadline = null;
                 tasks[index].deadlineSetAt = null;
             } else if (!isNaN(mins) && mins > 0) {
                 tasks[index].deadline = new Date(Date.now() + mins * 60 * 1000).toISOString();
                 tasks[index].deadlineSetAt = formatDate(new Date());
+            } else {
+                alert('输入格式不正确，请输入数字或带单位的数字（如 30m, 2h, 1d）');
             }
             saveTasks();
             renderTasks();
@@ -300,6 +302,41 @@ function getDeadlineMinutes(deadline) {
     const deadlineDate = new Date(deadline);
     const diff = deadlineDate - now;
     return Math.floor(diff / (1000 * 60));
+}
+
+function formatDeadlineTime(mins) {
+    if (mins <= 0) return '已过期';
+    
+    const days = Math.floor(mins / (60 * 24));
+    const hours = Math.floor((mins % (60 * 24)) / 60);
+    const minutes = mins % 60;
+    
+    if (days > 0) {
+        return `${days}天${hours}小时`;
+    } else if (hours > 0) {
+        return `${hours}小时${minutes}分钟`;
+    } else {
+        return `${minutes}分钟`;
+    }
+}
+
+function parseDeadlineInput(input) {
+    input = input.trim().toLowerCase();
+    
+    // Match patterns like "2h", "2 小时", "3d", "3 天", "30m", "30 分钟", "30"
+    const dayMatch = input.match(/^(\d+)\s*(d|天|day|days)?$/);
+    const hourMatch = input.match(/^(\d+)\s*(h|小时|hr|hrs|hour|hours)?$/);
+    const minMatch = input.match(/^(\d+)\s*(m|分钟|min|mins|minute|minutes)?$/);
+    
+    if (dayMatch && (input.includes('d') || input.includes('天') || input.includes('day'))) {
+        return parseInt(dayMatch[1]) * 24 * 60;
+    } else if (hourMatch && (input.includes('h') || input.includes('小时') || input.includes('hour'))) {
+        return parseInt(hourMatch[1]) * 60;
+    } else if (minMatch || !isNaN(parseInt(input))) {
+        return parseInt(input) || 0;
+    }
+    
+    return NaN;
 }
 
 function formatDate(date) {
