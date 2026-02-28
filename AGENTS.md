@@ -136,3 +136,27 @@ No Cursor rules (.cursor/rules/, .cursorrules) or Copilot rules (.github/copilot
 - Test manually in browser after changes
 - Preserve existing code style and patterns
 - No test automation to run - verify behavior visually
+
+## Additional Conventions
+
+**File Structure:**
+- All source files in `todo-list/` directory: `index.html`, `style.css`, `app.js`
+- HTML loads CSS first, then JS at end of body
+- No module system - scripts run in global scope
+
+**JavaScript Specifics:**
+- ES5-compatible syntax (no arrow functions in existing code)
+- `var`/`let` used, no `const` preference established
+- DOM manipulation via vanilla APIs only
+- setInterval refreshes UI every 60 seconds for deadline countdowns
+
+**CSS Specifics:**
+- Mobile-first responsive design
+- Webkit scrollbar styling for better UX
+- CSS animations for task items and modals
+- Flexbox for layout management
+
+**Accessibility:**
+- Chinese language content (lang="zh-CN")
+- Title attributes on action buttons
+- Keyboard support: Enter to add/confirm tasks
