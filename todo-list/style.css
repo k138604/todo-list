@@ -260,7 +260,7 @@ h1 {
 
 .task-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 14px 16px;
     background: #f8fafc;
     border-radius: 12px;
@@ -268,6 +268,7 @@ h1 {
     transition: all 0.2s;
     animation: fadeIn 0.3s ease;
     border-left: 4px solid transparent;
+    height: auto;
 }
 
 .task-item.important {
@@ -346,9 +347,10 @@ h1 {
     flex: 1;
     padding: 2px 4px;
     border-radius: 4px;
-    min-height: 45px;
+    min-height: 24px;
     max-height: 72px;
     overflow-y: auto;
+    display: block;
 }
 
 .task-text:focus {
